@@ -1,0 +1,7 @@
+might need to restart uwsgi for the changes to reflect, use 
+sudo systemctl restart uwsgi
+to restart
+
+this is the url to that main function, so you can see the page as you dev
+https://deco3801-ctrlshiftdel.uqcloud.net/SilverLifeMetric
+lol
