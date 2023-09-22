@@ -13,15 +13,15 @@ SilverLife Metrics is an innovative health monitoring system designed to enhance
 
 ## Features
 
-- **Real-time Stress Level Monitoring:** Utilizing Garmin watches to gather bio-sensor metrics from patients in real-time.
+- **Real-time Stress Level Monitoring:** Utilising Garmin watches to gather bio-sensor metrics from patients in real-time.
 - **AI Facial Expression Generation:** Leveraging AILab Tools for visualizing patient's health conditions through generated facial expressions.
 - **Display Hub for Healthcare Workers:** A web application showcasing AI facial expressions and heart rate data for an intuitive view of the patient's condition.
 - **Ambient Interfaces for Elderly Care:** Design and development of non-intrusive monitoring and assistance interfaces focused on elderly care.
 
 ## Technologies Used
 
-- **Frontend:** AILab
-- **Backend:** Python, Garmin Developer Tool
+- **Frontend:** Python Flask, HTML and CSS
+- **Backend:** Python, Garmin Developer Tool, AILab
 - **Cloud:** UQ Zone, MySQL, PHPMYADMIN
 - **Version Control:** Git
 
