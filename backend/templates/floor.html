@@ -1,77 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='f_style.css') }}">
-    
-    </head>
-    <body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='f_style.css') }}"
+    />
+  </head>
+  <body>
+    <div id="menu">
+      <div id="menu-bar" onclick="menuOnClick()">
+        <div id="bar1" class="bar"></div>
+        <div id="bar2" class="bar"></div>
+        <div id="bar3" class="bar"></div>
+      </div>
+      <nav class="nav" id="nav">
+        <ul>
+          <li>
+            <a href="https://deco3801-ctrlshiftdel.uqcloud.net/SilverLifeMetric"
+              >Home</a
+            >
+          </li>
+          <li><a href="{{ url_for('floor_detail', number=1) }}">Floor1</a></li>
+          <li><a href="{{ url_for('floor_detail', number=2) }}">Floor2</a></li>
+          <li><a href="{{ url_for('floor_detail', number=3) }}">Floor3</a></li>
+          <li><a href="{{ url_for('floor_detail', number=4) }}">Floor4</a></li>
+        </ul>
+      </nav>
+    </div>
 
-        <div id="menu">
-            <div id="menu-bar" onclick="menuOnClick()">
-              <div id="bar1" class="bar"></div>
-              <div id="bar2" class="bar"></div>
-              <div id="bar3" class="bar"></div>
-            </div>
-            <nav class="nav" id="nav">
-              <ul>
-                <li><a href ="https://deco3801-ctrlshiftdel.uqcloud.net/SilverLifeMetric">Home</a></li>
-                <li><a href="{{ url_for('floor_detail', number=1) }}">Floor1</a></li>
-                <li><a href="{{ url_for('floor_detail', number=2) }}">Floor2</a></li>
-                <li><a href="{{ url_for('floor_detail', number=3) }}">Floor3</a></li>
-                <li><a href="{{ url_for('floor_detail', number=4) }}">Floor4</a></li>
-              </ul>
-            </nav> 
+    <div class="menu-bg" id="menu-bg"></div>
+
+    <div class="new_blob">
+      <div class="gooey1"></div>
+      <div class="gooey2"></div>
+      <div class="gooey3"></div>
+      <div class="gooey4"></div>
+    </div>
+
+    <h2>Floor {{ floor_number}}</h2>
+    <!-- Takes URL parameter and displays it-->
+
+    <div class="patients" id="data-output">
+      <!-- {% for patient in patients %}
+      <div class="patient-card">
+        <img src="{{ patient.photo_path }}" width="300" height="200" />
+        <div class="patient-id">ID: {{ patient.user_access_token }}</div>
+        <div class="patient-name">
+          {{ patient.first_name }} {{ patient.last_name }}
         </div>
-          
-        <div class="menu-bg" id="menu-bg"></div>
+        <div class="patient-room">Room: {{ patient.room_number }}</div>
+      </div>
+      {% else %}
+      <div class="no-patients">No patients found on this floor</div>
+      {% endfor %} -->
+    </div>
 
-        <div class="new_blob">
-            <div class="gooey1"></div>
-            <div class="gooey2"></div>
-            <div class="gooey3"></div>
-            <div class="gooey4"></div>
+    <div class="footer">
+      <h3>Recognising Stress in our Patients:</h3>
+      <div class="stressLevelContainer">
+        <div class="stress-legend">
+          <div class="stressCircle" id="High"></div>
+          <p>High</p>
         </div>
-
-        <h2> Floor {{ floor_number}} </h2> <!-- Takes URL parameter and displays it-->
-
-        <div class = "patients" id="data-output"> <!-- Element to refresh every 5 mins for patients -->
-            {% for patient in patients %}
-            <div class="patient-card">
-                <img src="static/user.png">
-                <div class="patient-id" >ID: {{ patient.user_access_token }}</div>
-                <div class="patient-name">{{ patient.first_name }} {{ patient.last_name }}</div>
-                <div class="patient-room">Room: {{ patient.room_number }}</div>
-            </div>
-            {% else %}
-            <div class="no-patients">No patients found</div>
-            {% endfor %}
+        <div class="stress-legend">
+          <div class="stressCircle" id="Moderate"></div>
+          <p>Moderate</p>
         </div>
-
-        <div class="footer">
-            <h3>Recognising Stress in our Patients:</h3>
-            <div class= "stressLevelContainer">
-                <div class="stress-legend"> 
-                    <div class="stressCircle" id="High"></div>
-                    <p>High</p>
-                </div>
-                <div class="stress-legend"> 
-                    <div class="stressCircle" id="Moderate"></div>
-                    <p>Moderate</p>
-                </div>
-                <div class="stress-legend"> 
-                    <div class="stressCircle" id="Low"></div>
-                    <p>Low</p>
-                </div>
-            </div>
-
+        <div class="stress-legend">
+          <div class="stressCircle" id="Low"></div>
+          <p>Low</p>
         </div>
+      </div>
+    </div>
 
-
-        <script src="{{ url_for('static', filename='floor_script.js') }}"></script>
-
-    </body>
-
+    <script src="{{ url_for('static', filename='js/floor_script.js', v='1.0') }}"></script>
+    <script>
+      const floorNumber = Number("{{ floor_number }}");
+      updatePatientsData(floorNumber);
+    </script>
+  </body>
 </html>

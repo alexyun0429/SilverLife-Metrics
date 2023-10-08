@@ -249,18 +249,54 @@ h2 {
   }
 
 
-.patient {
-  padding-top: 10vh;
-  width: 100%;
-  height: 80%;
+  .patients {
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 10vh;
+    width: 100%;
+    height: 80%;
+    justify-content:center;
+    
+    
+    
+  }
   
-}
-
-.patient-card {
+  .patient-card {
+    
+    
+    display: inline-block;
+    text-align: center;
+    height: 50vh;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     max-width: 300px;
-    margin: auto;
-    text-align: center;
-}
   
-
+    margin:auto;
+    border-radius:2vw;
+    
+    
+  
+  }
+  
+  .patient-room {
+    font-weight: bold;
+    font-size: 2vw;
+    padding-top: 2vw;;
+    padding-bottom: 5vw;
+  }
+  
+  
+  .patient-name {
+    font-size: 2vw;
+    position:relative;
+    padding-top:5vw;
+  }
+  
+  
+  .no-patients {
+    font-size: 5vw;
+    margin: auto;
+    display: flex;
+    align-items: center;
+  }
+  
+  

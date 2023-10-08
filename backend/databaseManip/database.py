@@ -15,13 +15,12 @@ import os
     Init database connection when the app gets loaded.
     See crtlshiftdelAPI - where after the app is initialised, then this file is called
 """
- 
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'b004cb4920073d576ef69425'
-app.config['MYSQL_DB'] = 'hagrid'
-mysql = MySQL(app)
 
+app.config["MYSQL_HOST"] = "localhost"
+app.config["MYSQL_USER"] = "root"
+app.config["MYSQL_PASSWORD"] = "b004cb4920073d576ef69425"
+app.config["MYSQL_DB"] = "hagrid"
+mysql = MySQL(app)
 
 
 """HELPER CLASSES"""
@@ -35,6 +34,8 @@ Has minor error handling when inserting, if error on insert, aborts the insert a
 
 Returns 200
 """
+
+
 def addData(data):
     cursor = mysql.connection.cursor()
     sql = "INSERT INTO stress (stress_id, user_access_token, local_date, local_time, stress_level_value, stress_status) VALUES (%s, %s, %s, %s, %s, %s);"
@@ -44,7 +45,7 @@ def addData(data):
             mysql.connection.commit()
         except:
             mysql.connection.rollback()
-            
+
     cursor.close()
     return 200
 
@@ -61,7 +62,8 @@ def addData(data):
     :param room_name: The name of the room assigned to the patient.
     :type room_name: str
     """
-    
+
+
 def addPatient(user_access_token, first_name, last_name, room_name):
     cursor = mysql.connection.cursor()
     error = False
@@ -78,15 +80,16 @@ def addPatient(user_access_token, first_name, last_name, room_name):
         cursor.close()
         return error
 
+
 def saveDefaultPhoto(uat, photo_upload):
-    
     # Need to create patient folder
     path = f"/var/www/uwsgi/writable/patient_photos/{uat}/"
     os.mkdir(path)
-    photo_loction = path + "rest.png"
+    photo_loction = path + "photo_1.png"
     photo_upload.save(photo_loction)
 
     return photo_loction
+
 
 """
     Saves the photo locations to the 'photos' table in the database.
@@ -94,13 +97,36 @@ def saveDefaultPhoto(uat, photo_upload):
     :param photo_locations: A dictionary containing the user access token and the photo locations.
     :type photo_locations: dict
     """
+# def addPhotos(photo_locations):
+#     cursor = mysql.connection.cursor()
+#     try:
+#         for expression, photo_location in photo_locations['photos'].items():
+#             sql = """INSERT INTO photos (user_access_token, photo_location, expression_code)
+#                      VALUES (%s, %s, %s);"""
+#             cursor.execute(sql, (photo_locations['uat'], photo_location, expression))
+#             mysql.connection.commit()
+#     except Exception as e:
+#         print(f"Error: {e}")
+#         mysql.connection.rollback()
+#     finally:
+#         cursor.close()
+
+
 def addPhotos(photo_locations):
     cursor = mysql.connection.cursor()
     try:
-        for expression, photo_location in photo_locations['photos'].items():
-            sql = """INSERT INTO photos (user_access_token, photo_location, expression_code)
-                     VALUES (%s, %s, %s);"""
-            cursor.execute(sql, (photo_locations['uat'], photo_location, expression))
+        for expression in photo_locations["photos"].keys():
+            sql = """INSERT INTO photos (photo_id, user_access_token, photo_location, expression_code)
+                     VALUES (%s, %s, %s, %s);"""
+            cursor.execute(
+                sql,
+                (
+                    None,
+                    photo_locations["uat"],
+                    photo_locations["photos"][expression],
+                    expression,
+                ),
+            )
             mysql.connection.commit()
     except Exception as e:
         print(f"Error: {e}")
@@ -108,19 +134,6 @@ def addPhotos(photo_locations):
     finally:
         cursor.close()
 
-def addPhotos(photo_locations):
-    cursor = mysql.connection.cursor()
-    try:
-        for expression in photo_locations['photos'].keys():
-            sql = """INSERT INTO photos (photo_id, user_access_token, photo_location, expression_code)
-                     VALUES (%s, %s, %s, %s);"""
-            cursor.execute(sql, (None, photo_locations['uat'], photo_locations['photos'][expression], expression))
-            mysql.connection.commit()
-    except Exception as e:
-        print(f"Error: {e}")
-        mysql.connection.rollback()
-    finally:
-        cursor.close() 
 
 """
 def generatePhotos(uat, photo_location)
@@ -143,61 +156,67 @@ An object of the format:
         }
     }
 """
+
+
 def generatePhotos(uat, photo_location):
     # Call AILabs to get the expression photos
-    expressions = [0, 1, 2] # We already have a 4th (default photo) # 0 - teethy smile
-                                                                    # 1 - pout
-                                                                    # 2 - sad :(
+    expressions = [0, 2]  
+    # 0 - teethy smile
+    # 2 - sad :(
     returnObject = {"uat": uat}
-    
-    photo_locations = {
-        3: photo_location
-    }
-    
-    actual_expressions = {0 : "smile", 1 : "pout", 2 : "sad"}
+
+    photo_locations = {3: photo_location}
+
+    actual_expressions = {0: "0", 2: "2"}
     for expression in expressions:
         conn = http.client.HTTPSConnection("www.ailabapi.com")
         dataList = []
-        boundary = 'wL36Yn8afVp8Ag7AmP8qZ0SA4n1v9T'
-        dataList.append(encode('--' + boundary))
-        dataList.append(encode('Content-Disposition: form-data; name=image_target; filename={0}'.format('file')))
+        boundary = "wL36Yn8afVp8Ag7AmP8qZ0SA4n1v9T"
+        dataList.append(encode("--" + boundary))
+        dataList.append(
+            encode(
+                "Content-Disposition: form-data; name=image_target; filename={0}".format(
+                    "file"
+                )
+            )
+        )
 
-        fileType = mimetypes.guess_type(photo_location)[0] or 'application/octet-stream'
-        dataList.append(encode('Content-Type: {}'.format(fileType)))
-        dataList.append(encode(''))
+        fileType = mimetypes.guess_type(photo_location)[0] or "application/octet-stream"
+        dataList.append(encode("Content-Type: {}".format(fileType)))
+        dataList.append(encode(""))
 
-        with open(photo_location, 'rb') as f:
+        with open(photo_location, "rb") as f:
             dataList.append(f.read())
-        dataList.append(encode('--' + boundary))
-        dataList.append(encode('Content-Disposition: form-data; name=service_choice;'))
+        dataList.append(encode("--" + boundary))
+        dataList.append(encode("Content-Disposition: form-data; name=service_choice;"))
 
-        dataList.append(encode('Content-Type: {}'.format('text/plain')))
-        dataList.append(encode(''))
-        dataList.append(encode(str(expression))) # append our chosen expression 
+        dataList.append(encode("Content-Type: {}".format("text/plain")))
+        dataList.append(encode(""))
+        dataList.append(encode(str(expression)))  # append our chosen expression
 
         dataList.append(encode(""))
-        dataList.append(encode('--'+boundary+'--'))
-        dataList.append(encode(''))
-        body = b'\r\n'.join(dataList)
+        dataList.append(encode("--" + boundary + "--"))
+        dataList.append(encode(""))
+        body = b"\r\n".join(dataList)
         payload = body
         headers = {
-            'Content-type': 'multipart/form-data; boundary={}'.format(boundary),
-            'ailabapi-api-key': 'tLcTahCbAXNB5pgc3m9jLH7DIXsRPoyzSrKw3FdGhikjffEPyZdHZQV6eQB541AO'  # added authorization API key here/can be a key from any account doesn't matter  
+            "Content-type": "multipart/form-data; boundary={}".format(boundary),
+            "ailabapi-api-key": "tLcTahCbAXNB5pgc3m9jLH7DIXsRPoyzSrKw3FdGhikjffEPyZdHZQV6eQB541AO",  # added authorization API key here/can be a key from any account doesn't matter
         }
         conn.request("POST", "/api/portrait/effects/emotion-editor", payload, headers)
         res = conn.getresponse()
         data = res.read()
-        #print(data.decode("utf-8"))
+        # print(data.decode("utf-8"))
 
         # Convert bytes to string and parse as JSON
         response_json = json.loads(data.decode("utf-8"))
-        #print(response_json)
+        # print(response_json)
 
         # Decode the base64 image data
-        try: 
-            img_data = base64.b64decode(response_json['data']['image'])
+        try:
+            img_data = base64.b64decode(response_json["data"]["image"])
             # Save them under /writable/patient_photos/{uat}/
-            directory = f"/var/www/uwsgi/writable/patient_photos/{uat}/"
+            directory = f"/var/www/uwsgi/static/patient_photos/{uat}/"
 
             file_path = directory + f"photo_{actual_expressions[expression]}.png"
 
@@ -206,7 +225,7 @@ def generatePhotos(uat, photo_location):
 
             photo_locations[expression] = file_path
         except:
-            #failed
+            # failed
             pass
 
     returnObject["photos"] = photo_locations
@@ -222,25 +241,105 @@ def generatePhotos(uat, photo_location):
 
 """
 
-def get_patients_by_floor(floor_number):
-    cursor = mysql.connection.cursor()
-    cursor.execute("SELECT * FROM patients WHERE LEFT(room_number, 1) = %s", (floor_number,))
-    data = cursor.fetchall()
-    cursor.close()
-    # Convert tuples to dictionaries
-    patients = []
-    for patient_tuple in data:
-        patient_dict = {
-            "user_access_token": patient_tuple[0],
-            "first_name": patient_tuple[1],
-            "last_name": patient_tuple[2],
-            "room_number": patient_tuple[3]
-        }
-        patients.append(patient_dict)
-    
-    return patients
 
-@app.route('/getData', methods=["GET"])
+# def get_patients_by_floor(floor_number):
+#     cursor = mysql.connection.cursor()
+#     cursor.execute(
+#         "SELECT * FROM patients WHERE LEFT(room_number, 1) = %s", (floor_number,)
+#     )
+#     data = cursor.fetchall()
+#     cursor.close()
+#     # Convert tuples to dictionaries
+#     patients = []
+#     for patient_tuple in data:
+#         patient_dict = {
+#             "user_access_token": patient_tuple[0],
+#             "first_name": patient_tuple[1],
+#             "last_name": patient_tuple[2],
+#             "room_number": patient_tuple[3],
+#         }
+#         patients.append(patient_dict)
+
+
+#     return patients
+
+# def get_patients_by_floor(floor_number):
+#     cursor = mysql.connection.cursor()
+#     try:
+#         cursor.execute(
+#             "SELECT * FROM patients WHERE LEFT(room_number, 1) = %s", (floor_number,)
+#         )
+#         data = cursor.fetchall()
+#         patients = [
+#             {
+#                 "user_access_token": d[0],
+#                 "first_name": d[1],
+#                 "last_name": d[2],
+#                 "room_number": d[3],
+#             }
+#             for d in data
+#         ]
+#         return patients
+#     except Exception as e:
+#         print(f"Error: {str(e)}")
+#         return []
+#     finally:
+#         cursor.close()
+
+def get_patients_by_floor(floor_number):
+    cursor = None
+    try:
+        cursor = mysql.connection.cursor()
+        query = """
+        SELECT 
+            p.user_access_token, p.first_name, p.last_name, p.room_number, 
+            s.stress_status,
+            CONCAT('/static/patient_photos/', p.user_access_token, '/photo_', 
+                CASE
+                    WHEN s.stress_status = 'Low' THEN '0'
+                    WHEN s.stress_status = 'Medium' THEN '3'
+                    WHEN s.stress_status = 'High' THEN '2'
+                END, 
+            '.png') as photo_path
+        FROM 
+            patients p
+        LEFT JOIN 
+            (
+                SELECT user_access_token, stress_status
+                FROM stress
+                WHERE (user_access_token, local_date, local_time) IN (
+                    SELECT user_access_token, MAX(local_date), MAX(local_time)
+                    FROM stress
+                    GROUP BY user_access_token
+                )
+            ) s ON p.user_access_token = s.user_access_token
+        WHERE 
+            LEFT(p.room_number, 1) = %s
+        """
+
+        cursor.execute(query, (floor_number,))
+        data = cursor.fetchall()
+        patients = [
+            {
+                "user_access_token": row[0],
+                "first_name": row[1],
+                "last_name": row[2],
+                "room_number": row[3],
+                "photo_path": row[4]  # Example path
+            }
+            for row in data
+        ]
+
+        return patients
+    except Exception as e:
+        print(f"Error: {str(e)}")  
+        return []  
+    finally:
+        if cursor:  
+            cursor.close()
+
+
+@app.route("/getData", methods=["GET"])
 def get_patients():
     cursor = mysql.connection.cursor()
     cursor.execute("SELECT * FROM patients")
@@ -248,9 +347,8 @@ def get_patients():
     cursor.close()
     return data
 
-@app.route('/updateData', methods=["GET"])
-def updateData():
-    
-    return savePhotos(None) # NO savePhotos function
-    # return {"data":temp}
 
+@app.route("/updateData", methods=["GET"])
+def updateData():
+    return savePhotos(None)  # NO savePhotos function
+    # return {"data":temp}

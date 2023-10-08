@@ -1,132 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter&family=PT+Serif&display=swap" rel="stylesheet">
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
 
-    <div class="homepage" id = "blur">
-        <div class ="navbar">
-            
-            
-            <div class="buffer-space"></div>
-            
-            <div class="nav-content">
-                <img src="static/logo.png" class="logo" alt="logo image">
-                <button class="add-patient" type="button" onclick="toggle()">
-                    <p>Add Patients</p>
-                    <img src="static/patient.png">
-                    
-                </button>
-            </div>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter&family=PT+Serif&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="homepage" id="blur">
+      <div class="navbar">
+        <div class="buffer-space"></div>
+
+        <div class="nav-content">
+          <img src="static/logo.png" class="logo" alt="logo image" />
+          <button class="add-patient" type="button" onclick="toggle()">
+            <p>Add Patients</p>
+            <img src="static/patient.png" />
+          </button>
         </div>
+      </div>
 
-        <div class= "content">
-            <h1>Which Floor Are You On?</h1>
-            <div class="buttonContainer">
-                <!--
+      <d class="content">
+        <h1>Which Floor Are You On?</h1>
+        <div class="buttonContainer">
+          <!--
                     calls floor_detail in ctrlshiftdelFrontEnd.py and send a URL query Parameter
                 -->
-                <a href="{{ url_for('floor_detail', number=1) }}" class="button-link">
-                    <button class="button" id="one">
-                        <h1>Floor 1</h1>
-                        <p>Independent Living Units</p>
-                        <div class="buttonCircle"></div>
-                        <img src="static/independentLiving.png" alt="independent living image">
-                    </button>
-                </a>
+          <a href="{{ url_for('floor_detail', number=1) }}" class="button-link">
+            <button class="button" id="one">
+              <h1>Floor 1</h1>
+              <p>Independent Living Units</p>
+              <div class="buttonCircle"></div>
+              <img
+                src="static/independentLiving.png"
+                alt="independent living image"
+              />
+            </button>
+          </a>
 
-                <a href="{{ url_for('floor_detail', number=2) }}" class="button-link">
-                    <button class="button" id="two">
-                        <h1>Floor 2</h1>
-                        <p>Assisted Living Units</p>
-                        <div class="buttonCircle"></div>
-                        <img src="static/assistedLivingPic.png" alt="Assisted living image">
-                    </button>
-                </a>
-                <a href="{{ url_for('floor_detail', number=3) }}" class="button-link">
-                    <button class="button" id="three">
-                        <h1>Floor 3</h1>
-                        <p>Skilled Nursing Units</p>
-                        <div class="buttonCircle"></div>
-                        <img src="static/skilledNursingPic.png" alt="Skilled nursing image">
-                    </button>
-                </a>
-                <a href="{{ url_for('floor_detail', number=4) }}" class="button-link">
-                    <button class="button" id="four">
-                        <h1>Floor 4</h1>
-                        <p>Rehabilitation Units</p>
-                        <div class="buttonCircle"></div>
-                        <img src="static/rehabilitationUnits.png" alt="Rehabilitation image">
-                    </button>
-                </a>
-            </div>
+          <a href="{{ url_for('floor_detail', number=2) }}" class="button-link">
+            <button class="button" id="two">
+              <h1>Floor 2</h1>
+              <p>Assisted Living Units</p>
+              <div class="buttonCircle"></div>
+              <img
+                src="static/assistedLivingPic.png"
+                alt="Assisted living image"
+              />
+            </button>
+          </a>
+          <a href="{{ url_for('floor_detail', number=3) }}" class="button-link">
+            <button class="button" id="three">
+              <h1>Floor 3</h1>
+              <p>Skilled Nursing Units</p>
+              <div class="buttonCircle"></div>
+              <img
+                src="static/skilledNursingPic.png"
+                alt="Skilled nursing image"
+              />
+            </button>
+          </a>
+          <a href="{{ url_for('floor_detail', number=4) }}" class="button-link">
+            <button class="button" id="four">
+              <h1>Floor 4</h1>
+              <p>Rehabilitation Units</p>
+              <div class="buttonCircle"></div>
+              <img
+                src="static/rehabilitationUnits.png"
+                alt="Rehabilitation image"
+              />
+            </button>
+          </a>
         </div>
+      </div>
 
-        <div class="footer">
-            <h3>Recognising Stress in our Patients:</h3>
-            <div class= "stressLevelContainer">
-                <div class="stress-legend"> 
-                    <div class="stressCircle" id="High"></div>
-                    <p>High</p>
-                </div>
-                <div class="stress-legend"> 
-                    <div class="stressCircle" id="Moderate"></div>
-                    <p>Moderate</p>
-                </div>
-                <div class="stress-legend"> 
-                    <div class="stressCircle" id="Low"></div>
-                    <p>Low</p>
-                </div>
-            </div>
-
+      <div class="footer">
+        <h3>Recognising Stress in our Patients:</h3>
+        <div class="stressLevelContainer">
+          <div class="stress-legend">
+            <div class="stressCircle" id="High"></div>
+            <p>High</p>
+          </div>
+          <div class="stress-legend">
+            <div class="stressCircle" id="Moderate"></div>
+            <p>Moderate</p>
+          </div>
+          <div class="stress-legend">
+            <div class="stressCircle" id="Low"></div>
+            <p>Low</p>
+          </div>
         </div>
-
+      </div>
     </div>
 
     <div id="popup">
-        <!-- <form action="/action_page.php" >-->
-        <input id="close" type="image" src="static/close.png" alt="Close" onclick="toggle()">
-        <form id="patientForm">
-            
-            <div>
-                <label for ="ids">ID:</label>
-                <input type="text" id="ids" name="ids"><br><br>
-            </div>
+      <!-- <form action="/action_page.php" >-->
+      <input
+        id="close"
+        type="image"
+        src="static/close.png"
+        alt="Close"
+        onclick="toggle()"
+      />
+      <form id="patientForm">
+        <div>
+          <label for="ids">ID:</label>
+          <input type="text" id="ids" name="ids" /><br /><br />
+        </div>
 
-            <div>
-                <label for="fname">First name:</label>
-                <input type="text" id="fname" name="fname"><br><br>
-            </div>
+        <div>
+          <label for="fname">First name:</label>
+          <input type="text" id="fname" name="fname" /><br /><br />
+        </div>
 
-            <div>
-                <label for="lname">Last name:</label>
-                <input type="text" id="lname" name="lname"><br><br>
-            </div>
+        <div>
+          <label for="lname">Last name:</label>
+          <input type="text" id="lname" name="lname" /><br /><br />
+        </div>
 
-            <div>
-                <label for="rnum">Room number:</label>
-                <input type="text" id="rnum" name="rnum">
-            </div>
-            
-            <!-- value is the name of the button -->
-            <input type="checkbox" id="confirm" name="Confirm" onchange ="document.getElementById">
-            <!-- onclick submits the form using Json and unblurs homepage -->
-            <input type="button" value="Submit" onclick="submitForm();toggle();"> 
-            
-            
-        </form>
-        
+        <div>
+          <label for="rnum">Room number:</label>
+          <input type="text" id="rnum" name="rnum" />
+        </div>
+
+        <!-- value is the name of the button -->
+        <input
+          type="checkbox"
+          id="confirm"
+          name="Confirm"
+          onchange="document.getElementById"
+        />
+        <!-- onclick submits the form using Json and unblurs homepage -->
+        <input type="button" value="Submit" onclick="submitForm();toggle();" />
+      </form>
     </div>
 
-    <script src="{{ url_for('static', filename='index_script.js') }}"></script>
-
-</body>
+    <script src="{{ url_for('static', filename='JS/index_script.js') }}"></script>
+  </body>
 </html>
