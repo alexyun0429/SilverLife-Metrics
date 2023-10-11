@@ -8,6 +8,7 @@ import base64
 from io import BytesIO
 import json
 import os
+import sys
 
 """ 
     database.py initialising code
@@ -26,7 +27,7 @@ mysql = MySQL(app)
 """HELPER CLASSES"""
 
 """
-def addData(data)
+def addStressData(data)
 Parameters: data - an array of tuples, formatted to directly insert into the database
 
 This function loops through the array of tuples, and for each one, inserts it into the database,
@@ -36,7 +37,32 @@ Returns 200
 """
 
 
-def addData(data):
+def addStressData(data):
+    cursor = mysql.connection.cursor()
+    sql = "INSERT INTO stress (stress_id, user_access_token, local_date, local_time, stress_level_value, stress_status) VALUES (%s, %s, %s, %s, %s, %s);"
+    for i in data:
+        try:
+            cursor.execute(sql, i)
+            mysql.connection.commit()
+        except:
+            mysql.connection.rollback()
+
+    cursor.close()
+    return 200
+
+
+"""
+def addStressData(data)
+Parameters: data - an array of tuples, formatted to directly insert into the database
+
+This function loops through the array of tuples, and for each one, inserts it into the database,
+Has minor error handling when inserting, if error on insert, aborts the insert and does not retry adding
+
+Returns 200
+"""
+
+
+def addHRVData(data):
     cursor = mysql.connection.cursor()
     sql = "INSERT INTO stress (stress_id, user_access_token, local_date, local_time, stress_level_value, stress_status) VALUES (%s, %s, %s, %s, %s, %s);"
     for i in data:
@@ -83,9 +109,9 @@ def addPatient(user_access_token, first_name, last_name, room_name):
 
 def saveDefaultPhoto(uat, photo_upload):
     # Need to create patient folder
-    path = f"/var/www/uwsgi/writable/patient_photos/{uat}/"
+    path = f"/var/www/uwsgi/static/patient_photos/{uat}/"
     os.mkdir(path)
-    photo_loction = path + "photo_1.png"
+    photo_loction = path + "1.png"
     photo_upload.save(photo_loction)
 
     return photo_loction
@@ -160,14 +186,16 @@ An object of the format:
 
 def generatePhotos(uat, photo_location):
     # Call AILabs to get the expression photos
-    expressions = [0, 2]  
-    # 0 - teethy smile
-    # 2 - sad :(
+    expressions = [0, 2]
+    # 0 - teethy smile => low
+    # 1 - default => rest
+    # 2 - sad => high
+
     returnObject = {"uat": uat}
 
     photo_locations = {3: photo_location}
 
-    actual_expressions = {0: "0", 2: "2"}
+    actual_expressions = {0: "0", 2: "2", 1: "1"}
     for expression in expressions:
         conn = http.client.HTTPSConnection("www.ailabapi.com")
         dataList = []
@@ -218,7 +246,7 @@ def generatePhotos(uat, photo_location):
             # Save them under /writable/patient_photos/{uat}/
             directory = f"/var/www/uwsgi/static/patient_photos/{uat}/"
 
-            file_path = directory + f"photo_{actual_expressions[expression]}.png"
+            file_path = directory + f"{actual_expressions[expression]}.png"
 
             with open(file_path, "xb") as file:
                 file.write(img_data)
@@ -232,89 +260,38 @@ def generatePhotos(uat, photo_location):
     return returnObject
 
 
-"""TESTING FUNCTIONS"""
-
-"""
-    TODO: Delete before go live
-
-    Change call these functions to test above code if needed, just change the code as needed to call specific functions
-
-"""
-
-
-# def get_patients_by_floor(floor_number):
-#     cursor = mysql.connection.cursor()
-#     cursor.execute(
-#         "SELECT * FROM patients WHERE LEFT(room_number, 1) = %s", (floor_number,)
-#     )
-#     data = cursor.fetchall()
-#     cursor.close()
-#     # Convert tuples to dictionaries
-#     patients = []
-#     for patient_tuple in data:
-#         patient_dict = {
-#             "user_access_token": patient_tuple[0],
-#             "first_name": patient_tuple[1],
-#             "last_name": patient_tuple[2],
-#             "room_number": patient_tuple[3],
-#         }
-#         patients.append(patient_dict)
-
-
-#     return patients
-
-# def get_patients_by_floor(floor_number):
-#     cursor = mysql.connection.cursor()
-#     try:
-#         cursor.execute(
-#             "SELECT * FROM patients WHERE LEFT(room_number, 1) = %s", (floor_number,)
-#         )
-#         data = cursor.fetchall()
-#         patients = [
-#             {
-#                 "user_access_token": d[0],
-#                 "first_name": d[1],
-#                 "last_name": d[2],
-#                 "room_number": d[3],
-#             }
-#             for d in data
-#         ]
-#         return patients
-#     except Exception as e:
-#         print(f"Error: {str(e)}")
-#         return []
-#     finally:
-#         cursor.close()
-
 def get_patients_by_floor(floor_number):
     cursor = None
+
+    # 1) Get patient's by floor
+    # 2) Get most recent stress data row per patient
+    # 3) Retrieve correct photo path depending on stress status
+    # 4) Make into dictionary and return.
+    # *) every 5min re render
     try:
         cursor = mysql.connection.cursor()
         query = """
-        SELECT 
-            p.user_access_token, p.first_name, p.last_name, p.room_number, 
-            s.stress_status,
-            CONCAT('/static/patient_photos/', p.user_access_token, '/photo_', 
-                CASE
-                    WHEN s.stress_status = 'Low' THEN '0'
-                    WHEN s.stress_status = 'Medium' THEN '3'
-                    WHEN s.stress_status = 'High' THEN '2'
-                END, 
-            '.png') as photo_path
-        FROM 
-            patients p
-        LEFT JOIN 
+                SELECT
+                    p.user_access_token, p.first_name, p.last_name, p.room_number, CONCAT('/static/patient_photos/', p.user_access_token, '/', ph.expression_code, '.png') AS photo_path
+                FROM
+                    patients p
+                LEFT JOIN
             (
-                SELECT user_access_token, stress_status
+                SELECT 
+                    user_access_token, stress_status,
+                    ROW_NUMBER() OVER(PARTITION BY user_access_token ORDER BY local_date DESC, local_time DESC) AS rn
                 FROM stress
-                WHERE (user_access_token, local_date, local_time) IN (
-                    SELECT user_access_token, MAX(local_date), MAX(local_time)
-                    FROM stress
-                    GROUP BY user_access_token
+            ) s ON p.user_access_token = s.user_access_token AND s.rn = 1
+        LEFT JOIN
+            photos ph ON p.user_access_token = ph.user_access_token AND
+                (
+                    (s.stress_status = 'Low' AND ph.expression_code = 0) OR
+                    (s.stress_status = 'Rest' AND ph.expression_code = 1) OR
+                    (s.stress_status = 'High' AND ph.expression_code = 2)
                 )
-            ) s ON p.user_access_token = s.user_access_token
-        WHERE 
+        WHERE
             LEFT(p.room_number, 1) = %s
+
         """
 
         cursor.execute(query, (floor_number,))
@@ -325,18 +302,29 @@ def get_patients_by_floor(floor_number):
                 "first_name": row[1],
                 "last_name": row[2],
                 "room_number": row[3],
-                "photo_path": row[4]  # Example path
+                "photo_path": row[4],
             }
             for row in data
         ]
 
+        print(data, file=sys.stdout, flush=True)
         return patients
     except Exception as e:
-        print(f"Error: {str(e)}")  
-        return []  
+        print(f"Error: {str(e)}")
+        return []
     finally:
-        if cursor:  
+        if cursor:
             cursor.close()
+
+
+"""TESTING FUNCTIONS"""
+
+"""
+    TODO: Delete before go live
+
+    Change call these functions to test above code if needed, just change the code as needed to call specific functions
+
+"""
 
 
 @app.route("/getData", methods=["GET"])
@@ -350,5 +338,5 @@ def get_patients():
 
 @app.route("/updateData", methods=["GET"])
 def updateData():
-    return savePhotos(None)  # NO savePhotos function
+    return savePhotos(None)
     # return {"data":temp}

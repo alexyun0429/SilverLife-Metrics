@@ -7,80 +7,696 @@
     <link
       rel="stylesheet"
       type="text/css"
-      href="{{ url_for('static', filename='f_style.css') }}"
+      href="{{ url_for('static', filename='css/f_style.css') }}"
     />
   </head>
   <body>
-    <div id="menu">
-      <div id="menu-bar" onclick="menuOnClick()">
-        <div id="bar1" class="bar"></div>
-        <div id="bar2" class="bar"></div>
-        <div id="bar3" class="bar"></div>
+    <div class="floorpage" id="blur">
+      <div id="menu">
+        <!-- hamburger menu -->
+        <div id="menu-bar" onclick="menuOnClick()">
+          <div id="bar1" class="bar"></div>
+          <div id="bar2" class="bar"></div>
+          <div id="bar3" class="bar"></div>
+        </div>
+        <nav class="nav" id="nav">
+          <ul>
+            <li>
+              <a
+                href="https://deco3801-ctrlshiftdel.uqcloud.net/SilverLifeMetric"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a href="{{ url_for('floor_detail', number=1) }}">Floor 1</a>
+            </li>
+            <li>
+              <a href="{{ url_for('floor_detail', number=2) }}">Floor 2</a>
+            </li>
+            <li>
+              <a href="{{ url_for('floor_detail', number=3) }}">Floor 3</a>
+            </li>
+            <li>
+              <a href="{{ url_for('floor_detail', number=4) }}">Floor 4</a>
+            </li>
+          </ul>
+        </nav>
       </div>
-      <nav class="nav" id="nav">
-        <ul>
-          <li>
-            <a href="https://deco3801-ctrlshiftdel.uqcloud.net/SilverLifeMetric"
-              >Home</a
-            >
-          </li>
-          <li><a href="{{ url_for('floor_detail', number=1) }}">Floor1</a></li>
-          <li><a href="{{ url_for('floor_detail', number=2) }}">Floor2</a></li>
-          <li><a href="{{ url_for('floor_detail', number=3) }}">Floor3</a></li>
-          <li><a href="{{ url_for('floor_detail', number=4) }}">Floor4</a></li>
-        </ul>
-      </nav>
-    </div>
 
-    <div class="menu-bg" id="menu-bg"></div>
+      <div class="menu-bg" id="menu-bg"></div>
 
-    <div class="new_blob">
-      <div class="gooey1"></div>
-      <div class="gooey2"></div>
-      <div class="gooey3"></div>
-      <div class="gooey4"></div>
-    </div>
-
-    <h2>Floor {{ floor_number}}</h2>
-    <!-- Takes URL parameter and displays it-->
-
-    <div class="patients" id="data-output">
-      <!-- {% for patient in patients %}
-      <div class="patient-card">
-        <img src="{{ patient.photo_path }}" width="300" height="200" />
-        <div class="patient-id">ID: {{ patient.user_access_token }}</div>
-        <div class="patient-name">
-          {{ patient.first_name }} {{ patient.last_name }}
-        </div>
-        <div class="patient-room">Room: {{ patient.room_number }}</div>
+      <!-- Background Blobs -->
+      <div class="new_blob">
+        <div class="gooey1"></div>
+        <div class="gooey2"></div>
+        <div class="gooey3"></div>
+        <div class="gooey4"></div>
       </div>
-      {% else %}
-      <div class="no-patients">No patients found on this floor</div>
-      {% endfor %} -->
-    </div>
 
-    <div class="footer">
-      <h3>Recognising Stress in our Patients:</h3>
-      <div class="stressLevelContainer">
-        <div class="stress-legend">
-          <div class="stressCircle" id="High"></div>
-          <p>High</p>
+      <div class="content_container">
+        <!-- Title -->
+        <h2 class="title">Floor {{ floor_number}}</h2>
+
+        <div class="patients" id="data-output">
+          <!-- This is where the new patient cards go  -->
         </div>
-        <div class="stress-legend">
-          <div class="stressCircle" id="Moderate"></div>
-          <p>Moderate</p>
-        </div>
-        <div class="stress-legend">
-          <div class="stressCircle" id="Low"></div>
-          <p>Low</p>
+
+        <div class="footer">
+          <h3>Recognising Stress in our Patients:</h3>
+          <div class="stressLevelContainer">
+            <div class="stress-legend">
+              <div class="stressCircle" id="High"></div>
+              <p>High</p>
+            </div>
+            <div class="stress-legend">
+              <div class="stressCircle" id="Moderate"></div>
+              <p>Moderate</p>
+            </div>
+            <div class="stress-legend">
+              <div class="stressCircle" id="Low"></div>
+              <p>Low</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
+    <!-- the basic popup detail -->
+    <div class="patientDetails" id="popup">
+      <!-- <form action="/action_page.php" >-->
+      <div class="patientDetails_header">
+        <input
+          id="close"
+          type="image"
+          src="static/photos/Homepage/close.png"
+          alt="Close"
+          onclick="toggle()"
+        />
+
+        <div class="Name_Room"></div>
+      </div>
+
+      <div class="patientdata">
+        <div class="patientblock" id="stressdata">
+          <div class="data">
+            <p>Stress</p>
+            <h3>192</h3>
+          </div>
+
+          <div class="img-div"><img src="static/photos/Floor/patient_popup/stress.png" w /></div>
+        </div>
+        <div class="patientblock" id="hrvdata">
+          <div class="data">
+            <p>HRV</p>
+            <h3>40</h3>
+          </div>
+          <div class="img-div"><img
+            src="static/photos/Floor/patient_popup/icons8-heart-rate-100.png"
+          /></div>
+        </div>
+        <div class="patientblock" id="sleepdata">
+          <div class="data">
+            <p>Sleep</p>
+            <h3>100</h3>
+          </div>
+          <div class="img-div"><img src="static/photos/Floor/patient_popup/sleep.png" /></div>
+        </div>
+      </div>
+
+      <p>Patient Details</p>
+      <!-- Simulate Graph -->
+      <div class="patientgraph">
+        <svg
+          class="recharts-surface"
+          width="794"
+          height="400"
+          viewBox="0 0 794 400"
+          version="1.1"
+        >
+          <defs>
+            <clipPath id="recharts105-clip">
+              <rect x="60" y="15" height="335" width="704"></rect>
+            </clipPath>
+          </defs>
+          <g class="recharts-cartesian-grid">
+            <g class="recharts-cartesian-grid-horizontal">
+              <line
+                stroke="#ccc"
+                fill="none"
+                x="60"
+                y="15"
+                width="704"
+                height="335"
+                offset="[object Object]"
+                x1="60"
+                y1="350"
+                x2="764"
+                y2="350"
+              ></line>
+              <line
+                stroke="#ccc"
+                fill="none"
+                x="60"
+                y="15"
+                width="704"
+                height="335"
+                offset="[object Object]"
+                x1="60"
+                y1="266.25"
+                x2="764"
+                y2="266.25"
+              ></line>
+              <line
+                stroke="#ccc"
+                fill="none"
+                x="60"
+                y="15"
+                width="704"
+                height="335"
+                offset="[object Object]"
+                x1="60"
+                y1="182.5"
+                x2="764"
+                y2="182.5"
+              ></line>
+              <line
+                stroke="#ccc"
+                fill="none"
+                x="60"
+                y="15"
+                width="704"
+                height="335"
+                offset="[object Object]"
+                x1="60"
+                y1="98.75"
+                x2="764"
+                y2="98.75"
+              ></line>
+              <line
+                stroke="#ccc"
+                fill="none"
+                x="60"
+                y="15"
+                width="704"
+                height="335"
+                offset="[object Object]"
+                x1="60"
+                y1="15"
+                x2="764"
+                y2="15"
+              ></line>
+            </g>
+          </g>
+          <g
+            class="recharts-layer recharts-cartesian-axis recharts-xAxis xAxis"
+          >
+            <line
+              height="50"
+              angle="0"
+              dx="0"
+              dy="10"
+              orientation="bottom"
+              width="704"
+              type="category"
+              x="60"
+              y="350"
+              class="recharts-cartesian-axis-line"
+              stroke="#c3c3c3"
+              fill="none"
+              x1="60"
+              y1="350"
+              x2="764"
+              y2="350"
+            ></line>
+            <g class="recharts-cartesian-axis-ticks">
+              <g class="recharts-layer recharts-cartesian-axis-tick">
+                <line
+                  height="50"
+                  angle="0"
+                  dx="0"
+                  dy="10"
+                  orientation="bottom"
+                  width="704"
+                  type="category"
+                  x="60"
+                  y="350"
+                  class="recharts-cartesian-axis-tick-line"
+                  stroke="#c3c3c3"
+                  fill="none"
+                  x1="62"
+                  y1="356"
+                  x2="62"
+                  y2="350"
+                ></line>
+                <text
+                  height="50"
+                  orientation="bottom"
+                  width="704"
+                  type="category"
+                  x="62"
+                  y="368"
+                  stroke="none"
+                  fill="#666"
+                  font-size="9"
+                  class="recharts-text recharts-cartesian-axis-tick-value"
+                  text-anchor="middle"
+                >
+                  <tspan x="62" dy="0.71em">Thu</tspan>
+                </text>
+              </g>
+              <g class="recharts-layer recharts-cartesian-axis-tick">
+                <line
+                  height="50"
+                  angle="0"
+                  dx="0"
+                  dy="10"
+                  orientation="bottom"
+                  width="704"
+                  type="category"
+                  x="60"
+                  y="350"
+                  class="recharts-cartesian-axis-tick-line"
+                  stroke="#c3c3c3"
+                  fill="none"
+                  x1="162.57142857142856"
+                  y1="356"
+                  x2="162.57142857142856"
+                  y2="350"
+                ></line>
+                <text
+                  height="50"
+                  orientation="bottom"
+                  width="704"
+                  type="category"
+                  x="162.57142857142856"
+                  y="368"
+                  stroke="none"
+                  fill="#666"
+                  font-size="9"
+                  class="recharts-text recharts-cartesian-axis-tick-value"
+                  text-anchor="middle"
+                >
+                  <tspan x="162.57142857142856" dy="0.71em">Fri</tspan>
+                </text>
+              </g>
+              <g class="recharts-layer recharts-cartesian-axis-tick">
+                <line
+                  height="50"
+                  angle="0"
+                  dx="0"
+                  dy="10"
+                  orientation="bottom"
+                  width="704"
+                  type="category"
+                  x="60"
+                  y="350"
+                  class="recharts-cartesian-axis-tick-line"
+                  stroke="#c3c3c3"
+                  fill="none"
+                  x1="263.1428571428571"
+                  y1="356"
+                  x2="263.1428571428571"
+                  y2="350"
+                ></line>
+                <text
+                  height="50"
+                  orientation="bottom"
+                  width="704"
+                  type="category"
+                  x="263.1428571428571"
+                  y="368"
+                  stroke="none"
+                  fill="#666"
+                  font-size="9"
+                  class="recharts-text recharts-cartesian-axis-tick-value"
+                  text-anchor="middle"
+                >
+                  <tspan x="263.1428571428571" dy="0.71em">Sat</tspan>
+                </text>
+              </g>
+              <g class="recharts-layer recharts-cartesian-axis-tick">
+                <line
+                  height="50"
+                  angle="0"
+                  dx="0"
+                  dy="10"
+                  orientation="bottom"
+                  width="704"
+                  type="category"
+                  x="60"
+                  y="350"
+                  class="recharts-cartesian-axis-tick-line"
+                  stroke="#c3c3c3"
+                  fill="none"
+                  x1="363.7142857142857"
+                  y1="356"
+                  x2="363.7142857142857"
+                  y2="350"
+                ></line>
+                <text
+                  height="50"
+                  orientation="bottom"
+                  width="704"
+                  type="category"
+                  x="363.7142857142857"
+                  y="368"
+                  stroke="none"
+                  fill="#666"
+                  font-size="9"
+                  class="recharts-text recharts-cartesian-axis-tick-value"
+                  text-anchor="middle"
+                >
+                  <tspan x="363.7142857142857" dy="0.71em">Sun</tspan>
+                </text>
+              </g>
+              <g class="recharts-layer recharts-cartesian-axis-tick">
+                <line
+                  height="50"
+                  angle="0"
+                  dx="0"
+                  dy="10"
+                  orientation="bottom"
+                  width="704"
+                  type="category"
+                  x="60"
+                  y="350"
+                  class="recharts-cartesian-axis-tick-line"
+                  stroke="#c3c3c3"
+                  fill="none"
+                  x1="464.2857142857143"
+                  y1="356"
+                  x2="464.2857142857143"
+                  y2="350"
+                ></line>
+                <text
+                  height="50"
+                  orientation="bottom"
+                  width="704"
+                  type="category"
+                  x="464.2857142857143"
+                  y="368"
+                  stroke="none"
+                  fill="#666"
+                  font-size="9"
+                  class="recharts-text recharts-cartesian-axis-tick-value"
+                  text-anchor="middle"
+                >
+                  <tspan x="464.2857142857143" dy="0.71em">Mon</tspan>
+                </text>
+              </g>
+              <g class="recharts-layer recharts-cartesian-axis-tick">
+                <line
+                  height="50"
+                  angle="0"
+                  dx="0"
+                  dy="10"
+                  orientation="bottom"
+                  width="704"
+                  type="category"
+                  x="60"
+                  y="350"
+                  class="recharts-cartesian-axis-tick-line"
+                  stroke="#c3c3c3"
+                  fill="none"
+                  x1="564.8571428571429"
+                  y1="356"
+                  x2="564.8571428571429"
+                  y2="350"
+                ></line>
+                <text
+                  height="50"
+                  orientation="bottom"
+                  width="704"
+                  type="category"
+                  x="564.8571428571429"
+                  y="368"
+                  stroke="none"
+                  fill="#666"
+                  font-size="9"
+                  class="recharts-text recharts-cartesian-axis-tick-value"
+                  text-anchor="middle"
+                >
+                  <tspan x="564.8571428571429" dy="0.71em">Tue</tspan>
+                </text>
+              </g>
+              <g class="recharts-layer recharts-cartesian-axis-tick">
+                <line
+                  height="50"
+                  angle="0"
+                  dx="0"
+                  dy="10"
+                  orientation="bottom"
+                  width="704"
+                  type="category"
+                  x="60"
+                  y="350"
+                  class="recharts-cartesian-axis-tick-line"
+                  stroke="#c3c3c3"
+                  fill="none"
+                  x1="665.4285714285714"
+                  y1="356"
+                  x2="665.4285714285714"
+                  y2="350"
+                ></line>
+                <text
+                  height="50"
+                  orientation="bottom"
+                  width="704"
+                  type="category"
+                  x="665.4285714285714"
+                  y="368"
+                  stroke="none"
+                  fill="#666"
+                  font-size="9"
+                  class="recharts-text recharts-cartesian-axis-tick-value"
+                  text-anchor="middle"
+                >
+                  <tspan x="665.4285714285714" dy="0.71em">Wed</tspan>
+                </text>
+              </g>
+            </g>
+          </g>
+          <g
+            class="recharts-layer recharts-cartesian-axis recharts-yAxis yAxis"
+          >
+            <g class="recharts-cartesian-axis-ticks">
+              <g class="recharts-layer recharts-cartesian-axis-tick">
+                <text
+                  orientation="left"
+                  width="60"
+                  height="335"
+                  type="number"
+                  x="52"
+                  y="350"
+                  stroke="none"
+                  fill="#666"
+                  font-size="11"
+                  class="recharts-text recharts-cartesian-axis-tick-value"
+                  text-anchor="end"
+                >
+                  <tspan x="52" dy="0.355em">0</tspan>
+                </text>
+              </g>
+              <g class="recharts-layer recharts-cartesian-axis-tick">
+                <text
+                  orientation="left"
+                  width="60"
+                  height="335"
+                  type="number"
+                  x="52"
+                  y="266.25"
+                  stroke="none"
+                  fill="#666"
+                  font-size="11"
+                  class="recharts-text recharts-cartesian-axis-tick-value"
+                  text-anchor="end"
+                >
+                  <tspan x="52" dy="0.355em">25</tspan>
+                </text>
+              </g>
+              <g class="recharts-layer recharts-cartesian-axis-tick">
+                <text
+                  orientation="left"
+                  width="60"
+                  height="335"
+                  type="number"
+                  x="52"
+                  y="182.5"
+                  stroke="none"
+                  fill="#666"
+                  font-size="11"
+                  class="recharts-text recharts-cartesian-axis-tick-value"
+                  text-anchor="end"
+                >
+                  <tspan x="52" dy="0.355em">50</tspan>
+                </text>
+              </g>
+              <g class="recharts-layer recharts-cartesian-axis-tick">
+                <text
+                  orientation="left"
+                  width="60"
+                  height="335"
+                  type="number"
+                  x="52"
+                  y="98.75"
+                  stroke="none"
+                  fill="#666"
+                  font-size="11"
+                  class="recharts-text recharts-cartesian-axis-tick-value"
+                  text-anchor="end"
+                >
+                  <tspan x="52" dy="0.355em">75</tspan>
+                </text>
+              </g>
+              <g class="recharts-layer recharts-cartesian-axis-tick">
+                <text
+                  orientation="left"
+                  width="60"
+                  height="335"
+                  type="number"
+                  x="52"
+                  y="15"
+                  stroke="none"
+                  fill="#666"
+                  font-size="11"
+                  class="recharts-text recharts-cartesian-axis-tick-value"
+                  text-anchor="end"
+                >
+                  <tspan x="52" dy="0.355em">100</tspan>
+                </text>
+              </g>
+            </g>
+          </g>
+          <g class="recharts-layer recharts-line">
+            <path
+              fill="none"
+              stroke="#a6a6a6"
+              stroke-width="2"
+              points="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+              width="704"
+              height="335"
+              class="recharts-curve recharts-line-curve"
+              type="linear"
+              d="M110.28571428571428,229.4L210.85714285714283,125.54999999999998L311.4285714285714,272.95L412,236.09999999999997L512.5714285714286,199.25000000000003L613.1428571428572,202.60000000000002L713.7142857142858,205.95000000000002"
+            ></path>
+            <g class="recharts-layer recharts-line-dots">
+              <circle
+                r="3"
+                fill="#a6a6a6"
+                stroke="#a6a6a6"
+                stroke-width="2"
+                points="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                width="704"
+                height="335"
+                cx="110.28571428571428"
+                cy="229.4"
+                class="recharts-dot recharts-line-dot"
+              ></circle>
+              <circle
+                r="3"
+                fill="#a6a6a6"
+                stroke="#a6a6a6"
+                stroke-width="2"
+                points="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                width="704"
+                height="335"
+                cx="210.85714285714283"
+                cy="125.54999999999998"
+                class="recharts-dot recharts-line-dot"
+              ></circle>
+              <circle
+                r="3"
+                fill="#a6a6a6"
+                stroke="#a6a6a6"
+                stroke-width="2"
+                points="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                width="704"
+                height="335"
+                cx="311.4285714285714"
+                cy="272.95"
+                class="recharts-dot recharts-line-dot"
+              ></circle>
+              <circle
+                r="3"
+                fill="#a6a6a6"
+                stroke="#a6a6a6"
+                stroke-width="2"
+                points="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                width="704"
+                height="335"
+                cx="412"
+                cy="236.09999999999997"
+                class="recharts-dot recharts-line-dot"
+              ></circle>
+              <circle
+                r="3"
+                fill="#a6a6a6"
+                stroke="#a6a6a6"
+                stroke-width="2"
+                points="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                width="704"
+                height="335"
+                cx="512.5714285714286"
+                cy="199.25000000000003"
+                class="recharts-dot recharts-line-dot"
+              ></circle>
+              <circle
+                r="3"
+                fill="#a6a6a6"
+                stroke="#a6a6a6"
+                stroke-width="2"
+                points="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                width="704"
+                height="335"
+                cx="613.1428571428572"
+                cy="202.60000000000002"
+                class="recharts-dot recharts-line-dot"
+              ></circle>
+              <circle
+                r="3"
+                fill="#a6a6a6"
+                stroke="#a6a6a6"
+                stroke-width="2"
+                points="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                width="704"
+                height="335"
+                cx="713.7142857142858"
+                cy="205.95000000000002"
+                class="recharts-dot recharts-line-dot"
+              ></circle>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <!-- overlay that blurs the background  -->
+
+    <!-- this is the link for the floor_script js file  -->
     <script src="{{ url_for('static', filename='js/floor_script.js', v='1.0') }}"></script>
     <script>
       const floorNumber = Number("{{ floor_number }}");
       updatePatientsData(floorNumber);
+    </script>
+    <script>
+      setInterval(function () {
+        // $.ajax("#data-output")("/floor_script.json");
+        $.ajax({})("#data-output")("/floor_script.json");
+      }, 300000);
+
+      setInterval(function () {
+        $.ajax({
+          url: "/floor_script.json",
+          type: "GET",
+          dataType: "json",
+          success: function (data) {
+            // Update the #data-output div using the 'data' variable.
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            console.log("ERRORS: " + textStatus);
+          },
+        });
+      }, 300000);
     </script>
   </body>
 </html>

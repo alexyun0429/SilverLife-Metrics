@@ -7,7 +7,7 @@
     <link
       rel="stylesheet"
       type="text/css"
-      href="{{ url_for('static', filename='style.css') }}"
+      href="{{ url_for('static', filename='css/style.css') }}"
     />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -23,10 +23,10 @@
         <div class="buffer-space"></div>
 
         <div class="nav-content">
-          <img src="static/logo.png" class="logo" alt="logo image" />
+          <img src="static/photos/Homepage/logo.png" class="logo" alt="logo image" />
           <button class="add-patient" type="button" onclick="toggle()">
             <p>Add Patients</p>
-            <img src="static/patient.png" />
+            <img src="static/photos/Homepage/patient.png" />
           </button>
         </div>
       </div>
@@ -43,7 +43,7 @@
               <p>Independent Living Units</p>
               <div class="buttonCircle"></div>
               <img
-                src="static/independentLiving.png"
+                src="static/photos/Homepage/independentLiving.png"
                 alt="independent living image"
               />
             </button>
@@ -55,7 +55,7 @@
               <p>Assisted Living Units</p>
               <div class="buttonCircle"></div>
               <img
-                src="static/assistedLivingPic.png"
+                src="static/photos/Homepage/assistedLivingPic.png"
                 alt="Assisted living image"
               />
             </button>
@@ -66,39 +66,40 @@
               <p>Skilled Nursing Units</p>
               <div class="buttonCircle"></div>
               <img
-                src="static/skilledNursingPic.png"
+                src="static/photos/Homepage/skilledNursingPic.png"
                 alt="Skilled nursing image"
               />
             </button>
           </a>
+          
           <a href="{{ url_for('floor_detail', number=4) }}" class="button-link">
             <button class="button" id="four">
               <h1>Floor 4</h1>
               <p>Rehabilitation Units</p>
               <div class="buttonCircle"></div>
               <img
-                src="static/rehabilitationUnits.png"
+                src="static/photos/Homepage/rehabilitationUnits.png"
                 alt="Rehabilitation image"
               />
             </button>
           </a>
         </div>
-      </div>
 
-      <div class="footer">
-        <h3>Recognising Stress in our Patients:</h3>
-        <div class="stressLevelContainer">
-          <div class="stress-legend">
-            <div class="stressCircle" id="High"></div>
-            <p>High</p>
-          </div>
-          <div class="stress-legend">
-            <div class="stressCircle" id="Moderate"></div>
-            <p>Moderate</p>
-          </div>
-          <div class="stress-legend">
-            <div class="stressCircle" id="Low"></div>
-            <p>Low</p>
+        <div class="footer">
+          <h3>Recognising Stress in our Patients:</h3>
+          <div class="stressLevelContainer">
+            <div class="stress-legend">
+              <div class="stressCircle" id="High"></div>
+              <p>High</p>
+            </div>
+            <div class="stress-legend">
+              <div class="stressCircle" id="Moderate"></div>
+              <p>Moderate</p>
+            </div>
+            <div class="stress-legend">
+              <div class="stressCircle" id="Low"></div>
+              <p>Low</p>
+            </div>
           </div>
         </div>
       </div>
@@ -109,7 +110,7 @@
       <input
         id="close"
         type="image"
-        src="static/close.png"
+        src="static/photos/Homepage/close.png"
         alt="Close"
         onclick="toggle()"
       />
@@ -146,6 +147,6 @@
       </form>
     </div>
 
-    <script src="{{ url_for('static', filename='JS/index_script.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/index_script.js') }}"></script>
   </body>
 </html>

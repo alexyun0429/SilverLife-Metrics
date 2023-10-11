@@ -18,20 +18,26 @@ import os
 """
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path="/static")
 
 import ctrlshiftdelFrontEnd
 from databaseManip.database import *
 
 
 """This function can be ignored, but don't delete"""
-@app.route('/')
+
+
+@app.route("/")
 def index():
+    app.logger.info("Info level log")
+    app.logger.warning("Warning level log")
     return "<span style='color:red'>Hello index world</span>"
 
 
 """This function can be ignored, but don't delete"""
-@app.route('/foobar')
+
+
+@app.route("/foobar")
 def foobar():
     return "<span style='color:blue'>Hello again!</span>"
 
@@ -39,24 +45,36 @@ def foobar():
 """
 This function is the webhook used by garmin.
 """
-@app.route('/api/stress', methods = ['POST'])
-def stess():
-    
-    data = convertDataTime(request.data)
-    
-    addData(data)
 
-    #addData(data)
-    #print(request.headers, file=sys.stdout, flush=True)
-    #print(request.url, file=sys.stdout, flush=True)
-    #print(request.data, file=sys.stdout, flush=True)
+
+@app.route("/api/stress", methods=["POST"])
+def stess():
+    data = convertDataTime(request.data)
+
+    addStressData(data)
+
+    # addData(data)
+    # print(request.headers, file=sys.stdout, flush=True)
+    # print(request.url, file=sys.stdout, flush=True)
+    # print(request.data, file=sys.stdout, flush=True)
     request.close()
     return {"data": "success"}
 
-@app.route('/api/hmac')
+
+@app.route("/api/hrv", methods=["POST"])
+def hrv():
+    data = convertDataTime(request.data)
+
+    addHRVData(data)
+    request.close()
+    return {"data": "success"}
+
+
+@app.route("/api/hmac")
 def hmac():
     data = request.data
-    return jsonify({"data":"test"})
+    return jsonify({"data": "test"})
+
 
 """ @app.route('/api/photo', methods = ['POST'])
 def photo():
@@ -67,15 +85,15 @@ def photo():
     return {'data': 'success'} """
 
 
-@app.route('/api/addPatient', methods=['POST'])
+@app.route("/api/addPatient", methods=["POST"])
 def add_patient():
     # print(request.files['photo_upload'], file=sys.stdout, flush=True)
-    user_access_token = request.form.get('user_access_token')
-    first_name = request.form.get('first_name')
-    last_name = request.form.get('last_name')
-    room_name = request.form.get('room_name')
-    photo_upload = request.files['photo_upload']
-    
+    user_access_token = request.form.get("user_access_token")
+    first_name = request.form.get("first_name")
+    last_name = request.form.get("last_name")
+    room_name = request.form.get("room_name")
+    photo_upload = request.files["photo_upload"]
+
     patient = addPatient(user_access_token, first_name, last_name, room_name)
     if not patient:
         # Patient already in db
@@ -84,12 +102,12 @@ def add_patient():
     if photo_location == None:
         # error in the saveDefaultPhoto func
         return
-    
+
     obj = generatePhotos(user_access_token, photo_location)
-    print(obj['photos'].keys(), file=sys.stdout, flush=True)
+    # print(obj['photos'].keys(), file=sys.stdout, flush=True)
     addPhotos(obj)
-    
+
     return jsonify({"status": "success"})
 
-# Generate folder using ID as folder's name
 
+# Generate folder using ID as folder's name
