@@ -7,10 +7,10 @@ SilverLife Metric is a sophisticated health monitoring system tailored for elder
 
 ## Features
 
-- **Dynamic Floor-wise Monitoring**: View patient metrics categorized by floor for efficient monitoring.
+- **Dynamic Floor-wise Monitoring**: View patient metrics categorised by floor for efficient monitoring.
 - **Interactive Patient Cards**: Access detailed health data through interactive patient cards.
-- **Detailed Graph Visualizations**: Understand patient health trends with daily and weekly data visualizations.
-- **Stress Level Indicators**: Detect and address elevated stress levels in patients promptly.
+- **Detailed Graph Visualisations**: Understand patient health trends with daily and weekly data visualisations.
+- **Stress Level Indicators**: Detect and promptly address elevated stress levels in patients.
 - **Responsive Design**: Accessible on various devices, ensuring caregivers can monitor on the go.
 
 ## Getting Started
@@ -26,5 +26,5 @@ As this is a University project, it requires zone access to run the project.
 ## Usage
 
 1. **Navigation**: Use the hamburger menu to navigate between different floors.
-2. **Dashboard**: Gain a holistic view of all patients' health metrics in real-time.
+2. **Dashboard**: Gain a holistic real-time view of all patients' health metrics.
 3. **Patient Details**: Click on the "View More" button on a patient card to access detailed insights, including stress, HRV, sleep data, and a week-long health trend graph.
