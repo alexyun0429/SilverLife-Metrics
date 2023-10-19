@@ -2,8 +2,8 @@
 
 SilverLife Metric is a sophisticated health monitoring system tailored for elderly care facilities. Through an intuitive interface, caregivers and administrators can gain real-time insights into the health metrics of patients, ensuring optimal and timely care.
 
-![SilverLife Metric Dashboard](static/photos/Homepage/logo.png)
-_Replace `path/to/dashboard_screenshot.png` with an actual path to a screenshot of your dashboard._
+![SilverLife Metric Dashboard](<img width="946" alt="logo" src="https://github.com/alexyun0429/SilverLife-Metrics/assets/110068074/47c88cb8-b99c-45b5-bd78-b1659753a973">
+)
 
 ## Features
 
