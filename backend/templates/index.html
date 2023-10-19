@@ -18,65 +18,80 @@
     />
   </head>
   <body>
+    
     <div class="homepage" id="blur">
+      <!-- Homepage Header -->
       <div class="navbar">
         <div class="buffer-space"></div>
-
+        <!-- Content of Homepage Header -->
         <div class="nav-content">
+          <!-- Project logo -->
           <img src="static/photos/Homepage/logo.png" class="logo" alt="logo image" />
+          <!-- Button brings up a popup to Add Patient  -->
           <button class="add-patient" type="button" onclick="toggle()">
             <p>Add Patients</p>
+            <!-- Image of Adding patient -->
             <img src="static/photos/Homepage/patient.png" />
           </button>
         </div>
+
       </div>
 
+      <!-- Body of Homepage -->
       <d class="content">
         <h1>Which Floor Are You On?</h1>
+        <!-- Rows of button that links to floors stated -->
         <div class="buttonContainer">
-          <!--
-                    calls floor_detail in ctrlshiftdelFrontEnd.py and send a URL query Parameter
-                -->
+          <!--calls floor_detail in ctrlshiftdelFrontEnd.py and send a URL query Parameter 1-->
           <a href="{{ url_for('floor_detail', number=1) }}" class="button-link">
+            <!-- Button that links to Floor 1 -->
             <button class="button" id="one">
               <h1>Floor 1</h1>
               <p>Independent Living Units</p>
               <div class="buttonCircle"></div>
+              <!-- Image for Floor 1 -->
               <img
                 src="static/photos/Homepage/independentLiving.png"
                 alt="independent living image"
               />
             </button>
           </a>
-
+          <!--calls floor_detail in ctrlshiftdelFrontEnd.py and send a URL query Parameter  2-->
           <a href="{{ url_for('floor_detail', number=2) }}" class="button-link">
+            <!-- Button that links to Floor 2 -->
             <button class="button" id="two">
               <h1>Floor 2</h1>
               <p>Assisted Living Units</p>
               <div class="buttonCircle"></div>
+              <!-- Image for Floor 2 -->
               <img
                 src="static/photos/Homepage/assistedLivingPic.png"
                 alt="Assisted living image"
               />
             </button>
           </a>
+          <!--calls floor_detail in ctrlshiftdelFrontEnd.py and send a URL query Parameter  3-->
           <a href="{{ url_for('floor_detail', number=3) }}" class="button-link">
+            <!-- Button that links to Floor 3 -->
             <button class="button" id="three">
               <h1>Floor 3</h1>
               <p>Skilled Nursing Units</p>
               <div class="buttonCircle"></div>
+              <!-- Image for Floor 3 -->
               <img
                 src="static/photos/Homepage/skilledNursingPic.png"
                 alt="Skilled nursing image"
               />
             </button>
           </a>
-          
+          <!--calls floor_detail in ctrlshiftdelFrontEnd.py and send a URL query Parameter  4-->
           <a href="{{ url_for('floor_detail', number=4) }}" class="button-link">
+            <!-- Button that links to Floor 4 -->
             <button class="button" id="four">
               <h1>Floor 4</h1>
               <p>Rehabilitation Units</p>
               <div class="buttonCircle"></div>
+              <!-- Image for Floor 4 -->
               <img
                 src="static/photos/Homepage/rehabilitationUnits.png"
                 alt="Rehabilitation image"
@@ -85,18 +100,23 @@
           </a>
         </div>
 
+        <!-- Footer of Homepage -->
         <div class="footer">
+          <!-- List of Colours of Stress and the grade of it -->
           <h3>Recognising Stress in our Patients:</h3>
           <div class="stressLevelContainer">
             <div class="stress-legend">
+              <!-- High stress -->
               <div class="stressCircle" id="High"></div>
               <p>High</p>
             </div>
             <div class="stress-legend">
+              <!-- Moderate Stress -->
               <div class="stressCircle" id="Moderate"></div>
               <p>Moderate</p>
             </div>
             <div class="stress-legend">
+              <!-- Low Stress -->
               <div class="stressCircle" id="Low"></div>
               <p>Low</p>
             </div>
@@ -105,48 +125,56 @@
       </div>
     </div>
 
+    <!-- Pop up to add patients details to be added to database -->
     <div id="popup">
       <!-- <form action="/action_page.php" >-->
-      <input
-        id="close"
-        type="image"
-        src="static/photos/Homepage/close.png"
-        alt="Close"
-        onclick="toggle()"
-      />
-      <form id="patientForm">
-        <div>
-          <label for="ids">ID:</label>
-          <input type="text" id="ids" name="ids" /><br /><br />
-        </div>
-
-        <div>
-          <label for="fname">First name:</label>
-          <input type="text" id="fname" name="fname" /><br /><br />
-        </div>
-
-        <div>
-          <label for="lname">Last name:</label>
-          <input type="text" id="lname" name="lname" /><br /><br />
-        </div>
-
-        <div>
-          <label for="rnum">Room number:</label>
-          <input type="text" id="rnum" name="rnum" />
-        </div>
-
-        <!-- value is the name of the button -->
+      <div class="add-patient_header">
+        <!-- Close input to close popup -->
         <input
-          type="checkbox"
-          id="confirm"
-          name="Confirm"
-          onchange="document.getElementById"
+          id="close"
+          type="image"
+          src="static/photos/Homepage/close.png"
+          alt="Close"
+          onclick="toggle()"
         />
-        <!-- onclick submits the form using Json and unblurs homepage -->
-        <input type="button" value="Submit" onclick="submitForm();toggle();" />
-      </form>
-    </div>
+        Add Patient
+      </div>
+      <!-- Form data to add patients data -->
+      <form class="add-patient_body" id="patientForm" enctype="multipart/form-data" onsubmit="event.preventDefault(); submitForm();">
+        <div>
+            <!-- Id input textbox -->
+            <label for="ids">ID:</label>
+            <input type="text" id="ids" name="user_access_token" required><br><br>
+        </div>
+        <div>
+            <!-- First name input textbox -->
+            <label for="fname">First name:</label>
+            <input type="text" id="fname" name="first_name" required><br><br>
+        </div>
+        <div>
+            <!-- Last name input textbox -->
+            <label for="lname">Last name:</label>
+            <input type="text" id="lname" name="last_name" required><br><br>
+        </div>
+        <div>
+            <!-- Room number input textbox -->
+            <label for="rnum">Room number:</label>
+            <input type="text" id="rnum" name="room_number" required>
+        </div>
+        <!-- Input file to upload photos into database -->
+        <input type="file" id="myFile" name="photo_upload" accept="image/png, image/jpeg" required>
 
-    <script src="{{ url_for('static', filename='js/index_script.js') }}"></script>
+        <!-- Checkbox and Submit to submit to database -->
+        <div class="add-patient_footer">
+              <!-- Checkbox has to be tick for Submit button to be enabled -->
+            <input type="checkbox" id="confirm" name="Confirm">
+            <input type="submit" name="Submit" value="Submit" disabled>
+        </div>
+    </form>
+    
+      
+    </div>
+    <!-- Javascript file for index.html -->
+    <script src="{{ url_for('static', filename='js/index_script.js', v='1.0') }}"></script>
   </body>
 </html>

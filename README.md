@@ -1,41 +1,30 @@
-# SilverLife-Metrics
+# SilverLife Metric
 
-SilverLife Metrics is an innovative health monitoring system designed to enhance elderly care by providing non-intrusive and real-time stress level monitoring using Garmin watches and AI-driven facial expression generation tools.
+SilverLife Metric is a sophisticated health monitoring system tailored for elderly care facilities. Through an intuitive interface, caregivers and administrators can gain real-time insights into the health metrics of patients, ensuring optimal and timely care.
 
-## Table of Contents
-- [Features](#features)
-- [Technologies Used](#technologies-used)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
+![SilverLife Metric Dashboard](static/photos/Homepage/logo.png)
+_Replace `path/to/dashboard_screenshot.png` with an actual path to a screenshot of your dashboard._
 
 ## Features
 
-- **Real-time Stress Level Monitoring:** Utilising Garmin watches to gather bio-sensor metrics from patients in real-time.
-- **AI Facial Expression Generation:** Leveraging AILab Tools for visualizing patient's health conditions through generated facial expressions.
-- **Display Hub for Healthcare Workers:** A web application showcasing AI facial expressions and heart rate data for an intuitive view of the patient's condition.
-- **Ambient Interfaces for Elderly Care:** Design and development of non-intrusive monitoring and assistance interfaces focused on elderly care.
+- **Dynamic Floor-wise Monitoring**: View patient metrics categorized by floor for efficient monitoring.
+- **Interactive Patient Cards**: Access detailed health data through interactive patient cards.
+- **Detailed Graph Visualizations**: Understand patient health trends with daily and weekly data visualizations.
+- **Stress Level Indicators**: Detect and address elevated stress levels in patients promptly.
+- **Responsive Design**: Accessible on various devices, ensuring caregivers can monitor on the go.
 
-## Technologies Used
+## Getting Started
 
-- **Frontend:** Python Flask, HTML and CSS
-- **Backend:** Python, Garmin Developer Tool, AILab
-- **Cloud:** UQ Zone, MySQL, PHPMYADMIN
-- **Version Control:** Git
+### Prerequisites
 
-## Installation
+- Python 3.8+
+- Flask
+- MySQL
 
-```bash
-# Clone the repository
-git clone https://github.com/alexyun0429/SilverLifeMetrics.git
+As this is a University project, it requires zone access to run the project.
 
-# Navigate to the project directory
-cd SilverLifeMetrics
+## Usage
 
-# Install dependencies
-# (Add specific installation steps based on the project's requirements)
-
-# Start the application
-# (Provide instructions to start the application)
+1. **Navigation**: Use the hamburger menu to navigate between different floors.
+2. **Dashboard**: Gain a holistic view of all patients' health metrics in real-time.
+3. **Patient Details**: Click on the "View More" button on a patient card to access detailed insights, including stress, HRV, sleep data, and a week-long health trend graph.
